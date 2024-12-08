@@ -1,14 +1,16 @@
 package com.dubrovsky.task.restful.controller;
 
-import com.dubrovsky.task.restful.exception.TaskNotFoundException;
-import com.dubrovsky.task.restful.model.Task;
+import com.dubrovsky.task.restful.dto.TaskDTO;
 import com.dubrovsky.task.restful.service.TaskService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Контроллер для управления задачами в приложении.
+ * Предоставляет CRUD операции для работы с задачами.
+ */
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -19,42 +21,57 @@ public class TaskController {
         this.service = service;
     }
 
+    /**
+     * Создает новую задачу.
+     * @param taskDto объект, содержащий данные для создания задачи
+     * @return созданная TaskDTO
+     */
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return ResponseEntity.ok(service.createTask(task));
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskDTO createTask(@RequestBody TaskDTO taskDto) {
+        return service.createTask(taskDto);
     }
 
+    /**
+     * Получает задачу по её ID.
+     * @param id ID задачи, которую нужно получить
+     * @return TaskDTO для запрашиваемого ID
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTaskById(@PathVariable Long id) {
-        try {
-            Task task = service.getTaskById(id);
-            return ResponseEntity.ok(task);
-        } catch (TaskNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDTO getTaskById(@PathVariable Long id) {
+        return service.getTaskById(id);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(service.getAllTasks());
-    }
-
+    /**
+     * Обновляет задачу по её ID.
+     * @param id ID задачи для обновления
+     * @param taskDto обновленные данные задачи
+     * @return обновленная TaskDTO
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody Task task) {
-        try {
-            return ResponseEntity.ok(service.updateTask(id, task));
-        } catch (TaskNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDto) {
+        return service.updateTask(id, taskDto);
     }
 
+    /**
+     * Удаляет задачу по её ID.
+     * @param id ID задачи для удаления
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTask(@PathVariable Long id) {
-        try {
-            service.deleteTask(id);
-            return ResponseEntity.noContent().build();
-        } catch (TaskNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTask(@PathVariable Long id) {
+        service.deleteTask(id);
+    }
+
+    /**
+     * Получает все задачи.
+     * @return список всех TaskDTO
+     */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDTO> getAllTasks() {
+        return service.getAllTasks();
     }
 }

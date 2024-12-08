@@ -1,30 +1,12 @@
-package com.dubrovsky.task.restful.model;
-
-import jakarta.persistence.*;
+package com.dubrovsky.task.restful.dto;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "tasks")
-public class Task {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskDTO {
     private Long id;
-
     private String title;
     private String description;
     private Long userId;
-
-    public Task() {
-    }
-
-    public Task(Long id, String title, String description, Long userId) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.userId = userId;
-    }
 
     public Long getId() {
         return id;
@@ -34,20 +16,20 @@ public class Task {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getUserId() {
@@ -61,8 +43,8 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(userId, task.userId);
+        TaskDTO taskDTO = (TaskDTO) o;
+        return Objects.equals(id, taskDTO.id) && Objects.equals(title, taskDTO.title) && Objects.equals(description, taskDTO.description) && Objects.equals(userId, taskDTO.userId);
     }
 
     @Override
@@ -72,7 +54,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "TaskDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
