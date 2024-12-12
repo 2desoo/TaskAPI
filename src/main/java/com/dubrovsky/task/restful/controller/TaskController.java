@@ -1,6 +1,6 @@
 package com.dubrovsky.task.restful.controller;
 
-import com.dubrovsky.task.restful.dto.TaskDTO;
+import com.dubrovsky.task.restful.dto.TaskDto;
 import com.dubrovsky.task.restful.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class TaskController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskDTO createTask(@RequestBody TaskDTO taskDto) {
+    public TaskDto createTask(@RequestBody TaskDto taskDto) {
         return service.createTask(taskDto);
     }
 
@@ -39,7 +39,7 @@ public class TaskController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDTO getTaskById(@PathVariable Long id) {
+    public TaskDto getTaskById(@PathVariable Long id) {
         return service.getTaskById(id);
     }
 
@@ -51,7 +51,7 @@ public class TaskController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDto) {
+    public TaskDto updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
         return service.updateTask(id, taskDto);
     }
 
@@ -71,7 +71,7 @@ public class TaskController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskDto> getAllTasks() {
         return service.getAllTasks();
     }
 }

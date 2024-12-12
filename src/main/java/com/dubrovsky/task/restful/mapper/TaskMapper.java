@@ -1,6 +1,6 @@
 package com.dubrovsky.task.restful.mapper;
 
-import com.dubrovsky.task.restful.dto.TaskDTO;
+import com.dubrovsky.task.restful.dto.TaskDto;
 import com.dubrovsky.task.restful.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -17,7 +17,7 @@ public interface TaskMapper {
      * @param task Объект задачи.
      * @return Объект TaskDTO.
      */
-    TaskDTO toDTO(Task task);
+    TaskDto toDTO(Task task);
 
     /**
      * Преобразует объект TaskDTO в Task.
@@ -25,5 +25,5 @@ public interface TaskMapper {
      * @param taskDTO Объект TaskDTO.
      * @return Объект Task.
      */
-    Task toEntity(TaskDTO taskDTO);
+    Task toEntity(TaskDto taskDTO);
 }

@@ -2,7 +2,7 @@ package com.dubrovsky.task.restful.dto;
 
 import java.util.Objects;
 
-public class TaskDTO {
+public class TaskDto {
     private Long id;
     private String title;
     private String description;
@@ -43,7 +43,7 @@ public class TaskDTO {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        TaskDTO taskDTO = (TaskDTO) o;
+        TaskDto taskDTO = (TaskDto) o;
         return Objects.equals(id, taskDTO.id) && Objects.equals(title, taskDTO.title) && Objects.equals(description, taskDTO.description) && Objects.equals(userId, taskDTO.userId);
     }
 
