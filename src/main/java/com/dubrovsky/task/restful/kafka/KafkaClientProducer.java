@@ -16,7 +16,7 @@ public class KafkaClientProducer {
 
     public void send(Long id) {
         try {
-            kafkaTemplate.sendDefault(UUID.randomUUID().toString(), id).get();
+            kafkaTemplate.sendDefault(UUID.randomUUID().toString(), id);
             kafkaTemplate.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,7 +25,7 @@ public class KafkaClientProducer {
 
     public void sendTo(String topic, Object o) {
         try {
-            kafkaTemplate.send(topic, o).get();
+            kafkaTemplate.send(topic, o);
             kafkaTemplate.flush();
         } catch (Exception e) {
             e.printStackTrace();

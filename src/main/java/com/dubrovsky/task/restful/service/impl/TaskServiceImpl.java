@@ -8,8 +8,10 @@ import com.dubrovsky.task.restful.dto.TaskDto;
 import com.dubrovsky.task.restful.exception.TaskNotFoundException;
 import com.dubrovsky.task.restful.mapper.TaskMapper;
 import com.dubrovsky.task.restful.model.Task;
+import com.dubrovsky.task.restful.model.TaskStatus;
 import com.dubrovsky.task.restful.repository.TaskRepository;
 import com.dubrovsky.task.restful.service.TaskService;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,13 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository repository;
     private final TaskMapper mapper;
+
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendStatusChangeNotification(String message) {
+        kafkaTemplate.send("task-status-topic", message);
+    }
+
 
     public TaskServiceImpl(TaskRepository repository, TaskMapper mapper) {
         this.repository = repository;
@@ -52,10 +61,20 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto updateTask(Long id, TaskDto updatedTaskDto) {
         Task task = repository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task with ID " + id + " not found"));
+
+        TaskStatus oldStatus = task.getStatus();
+
         task.setTitle(updatedTaskDto.getTitle());
         task.setDescription(updatedTaskDto.getDescription());
         task.setUserId(updatedTaskDto.getUserId());
+        task.setStatus(updatedTaskDto.getStatus());
+
         Task updatedTask = repository.save(task);
+
+        if (oldStatus != task.getStatus()) {
+            sendStatusChangeNotification(String.valueOf(task));
+        }
+
         return mapper.toDTO(updatedTask);
     }
 

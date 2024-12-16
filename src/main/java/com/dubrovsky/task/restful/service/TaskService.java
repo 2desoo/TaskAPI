@@ -51,4 +51,6 @@ public interface TaskService {
      * @return Список ДТО всех задач.
      */
     List<TaskDto> getAllTasks();
+
+    void sendStatusChangeNotification(String message);
 }
