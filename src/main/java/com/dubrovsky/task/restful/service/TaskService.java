@@ -1,6 +1,6 @@
 package com.dubrovsky.task.restful.service;
 
-import com.dubrovsky.task.restful.dto.TaskDTO;
+import com.dubrovsky.task.restful.dto.TaskDto;
 import com.dubrovsky.task.restful.exception.TaskNotFoundException;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface TaskService {
      * @param taskDto ДТО с данными новой задачи.
      * @return ДТО созданной задачи с обновленными данными, включая ID.
      */
-    TaskDTO createTask(TaskDTO taskDto);
+    TaskDto createTask(TaskDto taskDto);
 
     /**
      * Обновляет задачу по-заданному ID.
@@ -26,7 +26,7 @@ public interface TaskService {
      * @return Обновленное ДТО задачи.
      * @throws TaskNotFoundException если задача с указанным ID не найдена.
      */
-    TaskDTO updateTask(Long id, TaskDTO updatedTaskDto);
+    TaskDto updateTask(Long id, TaskDto updatedTaskDto);
 
     /**
      * Удаляет задачу по-заданному ID.
@@ -43,12 +43,14 @@ public interface TaskService {
      * @return ДТО задачи с указанным ID.
      * @throws TaskNotFoundException если задача с указанным ID не найдена.
      */
-    TaskDTO getTaskById(Long id);
+    TaskDto getTaskById(Long id);
 
     /**
      * Получает список всех задач.
      *
      * @return Список ДТО всех задач.
      */
-    List<TaskDTO> getAllTasks();
+    List<TaskDto> getAllTasks();
+
+    void sendStatusChangeNotification(String message);
 }

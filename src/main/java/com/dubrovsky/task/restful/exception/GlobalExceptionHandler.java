@@ -17,4 +17,12 @@ public class GlobalExceptionHandler {
         response.put("error", ex.getMessage());
         return response;
     }
+
+    @ExceptionHandler(ClientNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleClientNotFoundException(ClientNotFoundException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return response;
+    }
 }

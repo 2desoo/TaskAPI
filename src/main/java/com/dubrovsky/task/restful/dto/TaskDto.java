@@ -1,12 +1,23 @@
 package com.dubrovsky.task.restful.dto;
 
-import java.util.Objects;
+import com.dubrovsky.task.restful.model.TaskStatus;
 
-public class TaskDTO {
+public class TaskDto {
     private Long id;
     private String title;
     private String description;
     private Long userId;
+    private TaskStatus status;
+
+    public TaskDto() {}
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
@@ -41,24 +52,13 @@ public class TaskDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        TaskDTO taskDTO = (TaskDTO) o;
-        return Objects.equals(id, taskDTO.id) && Objects.equals(title, taskDTO.title) && Objects.equals(description, taskDTO.description) && Objects.equals(userId, taskDTO.userId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, description, userId);
-    }
-
-    @Override
     public String toString() {
-        return "TaskDTO{" +
+        return "TaskDto{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", userId=" + userId +
+                ", status=" + status +
                 '}';
     }
 }
