@@ -1,9 +1,5 @@
 package com.dubrovsky.task.restful.service.impl;
 
-import com.dubrovsky.task.restful.aspect.LoggingAround;
-import com.dubrovsky.task.restful.aspect.LoggingException;
-import com.dubrovsky.task.restful.aspect.LoggingExecution;
-import com.dubrovsky.task.restful.aspect.LoggingReturn;
 import com.dubrovsky.task.restful.dto.TaskDto;
 import com.dubrovsky.task.restful.exception.TaskNotFoundException;
 import com.dubrovsky.task.restful.mapper.TaskMapper;
@@ -11,6 +7,11 @@ import com.dubrovsky.task.restful.model.Task;
 import com.dubrovsky.task.restful.model.TaskStatus;
 import com.dubrovsky.task.restful.repository.TaskRepository;
 import com.dubrovsky.task.restful.service.TaskService;
+import org.spring.dubrovsky.starter.LoggingAround;
+import org.spring.dubrovsky.starter.LoggingException;
+import org.spring.dubrovsky.starter.LoggingExecution;
+import org.spring.dubrovsky.starter.LoggingReturn;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +23,17 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository repository;
     private final TaskMapper mapper;
-
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> clientKafkaTemplate;
 
     public void sendStatusChangeNotification(String message) {
-        kafkaTemplate.send("task-status-topic", message);
+        clientKafkaTemplate.send("task-status-topic", message);
     }
 
-
-    public TaskServiceImpl(TaskRepository repository, TaskMapper mapper) {
-        this.repository = repository;
+    @Autowired
+    public TaskServiceImpl(KafkaTemplate<String, String> clientKafkaTemplate, TaskMapper mapper, TaskRepository repository) {
+        this.clientKafkaTemplate = clientKafkaTemplate;
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @LoggingExecution
@@ -75,7 +76,15 @@ public class TaskServiceImpl implements TaskService {
             sendStatusChangeNotification(String.valueOf(task));
         }
 
-        return mapper.toDTO(updatedTask);
+        TaskDto result = mapper.toDTO(updatedTask);
+
+        if (result == null) {
+            System.out.println("Error: result is null after mapping Task to TaskDto");
+        } else {
+            System.out.println("Successfully mapped Task to TaskDto: " + result);
+        }
+
+        return result;
     }
 
     @LoggingAround
